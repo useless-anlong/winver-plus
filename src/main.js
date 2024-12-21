@@ -60,5 +60,5 @@ document.addEventListener('DOMContentLoaded', () => {
 const openGithubUrlButton = document.getElementById('gotoGithub');
 openGithubUrlButton.addEventListener('click', async function () {
     console.log('已执行打开url');
-    await open('https://github.com/tauri-apps/tauri');
+    await open('https://github.com/useless-anlong/winver-plus');
 });
