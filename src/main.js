@@ -3,26 +3,32 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 import { open } from '@tauri-apps/plugin-shell';
 
 const appWindow = getCurrentWindow();
-appWindow.hide();
+// appWindow.hide();
 
 document
     .getElementById('done-button')
     ?.addEventListener('click', () => appWindow.close());
 
+document.addEventListener('contextmenu', (e) => {
+    e.preventDefault()
+    return false
+}, false)
+
 document.addEventListener('DOMContentLoaded', () => {
     const errorInfo = document.getElementById('error-info');
     const loader = document.getElementById('loader');
     const mainContent = document.querySelector('main');
-    appWindow.show();
+    // appWindow.show();
 
     // 初始状态：显示加载器，隐藏主内容
     loader.style.display = 'flex';
     loader.style.opacity = '1';
     mainContent.style.opacity = '0';
+    mainContent.style.display = 'flex';
     errorInfo.style.opacity = '0';
-    setTimeout(() => {
-        mainContent.style.display = 'none';
-    }, 250);
+    // setTimeout(() => {
+    //     mainContent.style.display = 'none';
+    // }, 250);
 
     invoke('get_windows_info')
         .then(([windowsCaption, buildVersion, displayVersion, registeredOrg, registeredOwner, osLocale, pcSystemType, systemType]) => {
@@ -48,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            mainContent.style.display = 'flex';
             mainContent.style.opacity = '1';
             loader.style.opacity = '0';
             errorInfo.style.opacity = '0';
