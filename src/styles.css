@@ -25,8 +25,19 @@ body {
 }
 
 #title {
-    padding: 24px 24px 0 24px;
+    padding: 18px 24px 10px 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
 }
+
+#title p {
+    font-size: 14px;
+    line-height: 16px;
+}
+
 
 .container {
     margin: 0;
@@ -260,13 +271,20 @@ button:active::before {
 }
 
 svg#w11_logo {
+    transform: scale(0.7);
+    opacity: 0;
     animation: logo-scale-in-all 0.55s cubic-bezier(0.5, -0.2, 1, 1) 0.25s forwards;
 }
 
 @keyframes logo-scale-in-all {
+    0% {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+
     10% {
         transform: scale(0.7);
-        opacity: 0.7;
+        opacity: 0.35;
     }
 
     50% {
@@ -310,8 +328,8 @@ hr {
     align-items: center;
     flex-direction: row;
     justify-content: flex-start;
-    /* padding: 0 0 38px 0; */
-    /* gap: 16px; */
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 /* .grid .item:nth-child(-n+1) {
@@ -323,7 +341,7 @@ hr {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    width: 164px;
+    width: 172px;
     gap: 12px;
 }
 
@@ -405,6 +423,7 @@ footer button svg path {
     /* align-self: center; */
     /* justify-self: center; */
     align-items: center;
+    pointer-events: none;
     justify-content: center;
 }
 
@@ -531,4 +550,43 @@ footer button svg path {
 
 #gotoGithub::before {
     width: 154px;
+}
+
+.button-row {
+    width: calc(100% - 8px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+#error-info {
+    height: calc(100vh - 56px);
+    width: 100vw;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    pointer-events: none;
+}
+
+#error-info p {
+    text-align: center;
+}
+
+p#error-message {
+    font-family: Cascadia Mono, ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 350;
+    color: var(--Text-Fill-Color-Secondary);
+    line-height: 18px;
+    margin-top: 24px;
+    user-select: all;
+}
+
+.emoji {
+    margin-bottom: 8px;
 }

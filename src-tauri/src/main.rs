@@ -20,91 +20,102 @@ pub fn main() {
                 .expect("Unsupported platform! 'apply_blur' is only supported on Windows");
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![get_windows_info])
+        .invoke_handler(tauri::generate_handler![get_windows_info, open_system_info])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
 
 #[tauri::command]
-fn get_windows_info() -> Result<(String, String, String, String, String), String> {
-    // 修改为5个元素的元组
-    let get_caption = Command::new("powershell")
+fn open_system_info() -> Result<(), String> {
+    Command::new("powershell")
         .args([
             "-NoProfile",
             "-NonInteractive",
+            "-WindowStyle",
+            "Hidden",
             "-Command",
-            "$OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8; (Get-CimInstance Win32_OperatingSystem).Caption"
+            "start ms-settings:about",
+        ])
+        .output()
+        .map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+#[tauri::command]
+fn get_windows_info() -> Result<
+    (
+        String,
+        String,
+        String,
+        String,
+        String,
+        String,
+        String,
+        String,
+    ),
+    String,
+> {
+    // 合并所有查询到一个PowerShell命令中
+    let ps_command = r#"$OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8;
+    $os = Get-CimInstance Win32_OperatingSystem;
+    $cs = Get-CimInstance Win32_ComputerSystem;
+    $nt = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion';
+    $ui = Get-WinSystemLocale;
+    
+    $result = @{
+        Caption = $os.Caption
+        DisplayVersion = $nt.DisplayVersion
+        BuildVersion = $nt.LCUVer
+        RegisteredOrg = $nt.RegisteredOrganization
+        RegisteredOwner = $nt.RegisteredOwner
+        OsLocale = $ui.DisplayName
+        PCSystemType = switch ($cs.PCSystemType) {
+            0 {"未指定"}
+            1 {"桌面设备"}
+            2 {"便携式设备"}
+            3 {"工作站"}
+            4 {"企业服务器"}
+            5 {"SOHO服务器"}
+            6 {"设备控制器"}
+            7 {"单功能系统"}
+            8 {"笔记本电脑"}
+            default {"未知"}
+        }
+        SystemType = $cs.SystemType
+    };
+    
+    $result | ConvertTo-Json"#;
+
+    let output = Command::new("powershell")
+        .args([
+            "-NoProfile",
+            "-NonInteractive",
+            "-WindowStyle",
+            "Hidden",
+            "-Command",
+            ps_command,
         ])
         .output()
         .map_err(|e| e.to_string())?;
 
-    let get_display_version = Command::new("powershell")
-        .args([
-            "-NoProfile",
-            "-NonInteractive",
-            "-Command",
-            "$OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8; (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion').DisplayVersion"
-        ])
-        .output()
-        .map_err(|e| e.to_string())?;
+    let output_str =
+        String::from_utf8(output.stdout).map_err(|e| format!("输出编码错误: {}", e))?;
 
-    let get_build = Command::new("powershell")
-        .args([
-            "-NoProfile",
-            "-NonInteractive",
-            "-Command",
-            "$OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8; (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion').LCUVer"
-        ])
-        .output()
-        .map_err(|e| e.to_string())?;
-
-    let get_registered_org = Command::new("powershell")
-        .args([
-            "-NoProfile",
-            "-NonInteractive",
-            "-Command",
-            "$OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8; (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion').RegisteredOrganization"
-        ])
-        .output()
-        .map_err(|e| e.to_string())?;
-
-    let get_registered_owner = Command::new("powershell")
-        .args([
-            "-NoProfile",
-            "-NonInteractive",
-            "-Command",
-            "$OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8; (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion').RegisteredOwner"
-        ])
-        .output()
-        .map_err(|e| e.to_string())?;
-
-    let caption = String::from_utf8(get_caption.stdout)
-        .map_err(|e| format!("Caption编码错误: {}", e))?
-        .trim()
-        .to_string();
-    let display_version = String::from_utf8(get_display_version.stdout)
-        .map_err(|e| format!("DisplayVersion编码错误: {}", e))?
-        .trim()
-        .to_string();
-    let build_version = String::from_utf8(get_build.stdout)
-        .map_err(|e| format!("BuildVersion编码错误: {}", e))?
-        .trim()
-        .replace("10.0.", "");
-    let registered_org = String::from_utf8(get_registered_org.stdout)
-        .map_err(|e| format!("RegisteredOrg编码错误: {}", e))?
-        .trim()
-        .to_string();
-    let registered_owner = String::from_utf8(get_registered_owner.stdout)
-        .map_err(|e| format!("RegisteredOwner编码错误: {}", e))?
-        .trim()
-        .to_string();
-
+    // 解析JSON输出
+    let result: serde_json::Value =
+        serde_json::from_str(&output_str).map_err(|e| format!("JSON解析错误: {}", e))?;
     Ok((
-        caption,
-        build_version,
-        display_version,
-        registered_org,
-        registered_owner,
+        result["Caption"].as_str().unwrap_or("").to_string(),
+        result["BuildVersion"]
+            .as_str()
+            .unwrap_or("")
+            .replace("10.0.", ""),
+        result["DisplayVersion"].as_str().unwrap_or("").to_string(),
+        result["RegisteredOrg"].as_str().unwrap_or("").to_string(),
+        result["RegisteredOwner"].as_str().unwrap_or("").to_string(),
+        result["OsLocale"].as_str().unwrap_or("").to_string(),
+        result["PCSystemType"].as_str().unwrap_or("").to_string(),
+        result["SystemType"].as_str().unwrap_or("").to_string(),
     ))
 }
 

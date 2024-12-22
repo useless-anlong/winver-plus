@@ -10,16 +10,22 @@ document
     ?.addEventListener('click', () => appWindow.close());
 
 document.addEventListener('DOMContentLoaded', () => {
+    const errorInfo = document.getElementById('error-info');
     const loader = document.getElementById('loader');
     const mainContent = document.querySelector('main');
     appWindow.show();
 
     // 初始状态：显示加载器，隐藏主内容
     loader.style.display = 'flex';
-    mainContent.style.display = 'none';
+    loader.style.opacity = '1';
+    mainContent.style.opacity = '0';
+    errorInfo.style.opacity = '0';
+    setTimeout(() => {
+        mainContent.style.display = 'none';
+    }, 250);
 
     invoke('get_windows_info')
-        .then(([windowsCaption, buildVersion, displayVersion, registeredOrg, registeredOwner]) => {
+        .then(([windowsCaption, buildVersion, displayVersion, registeredOrg, registeredOwner, osLocale, pcSystemType, systemType]) => {
             const cleanWindowsName = windowsCaption.replace('Microsoft ', '');
             const editionName = cleanWindowsName.replace('Windows 11 ', '');
 
@@ -29,7 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 'system-version': displayVersion,
                 'bulid-version': buildVersion,
                 'registered-org': registeredOrg,
-                'registered-owner': registeredOwner
+                'registered-owner': registeredOwner,
+                'system-locale': osLocale,
+                'device-type': pcSystemType,
+                'system-type': systemType
             };
 
             for (const [id, value] of Object.entries(elements)) {
@@ -39,9 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // 数据加载完成后：隐藏加载器，显示主内容
-            loader.style.display = 'none';
             mainContent.style.display = 'flex';
+            mainContent.style.opacity = '1';
+            loader.style.opacity = '0';
+            errorInfo.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 250);
 
             console.log('Windows Info:', elements);
         })
@@ -49,11 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('获取系统信息失败:', error);
             const errorElement = document.getElementById('error-message');
             if (errorElement) {
-                errorElement.textContent = `错误: ${error}`;
+                errorElement.innerHTML = `error: ${error}`;
             }
             loader.style.display = 'none';
             mainContent.style.display = 'flex';
-            appWindow.show();
+            errorInfo.style.opacity = '1';
+            errorInfo.style.pointerEvents = 'all';
         });
 });
 
@@ -61,4 +75,9 @@ const openGithubUrlButton = document.getElementById('gotoGithub');
 openGithubUrlButton.addEventListener('click', async function () {
     console.log('已执行打开url');
     await open('https://github.com/useless-anlong/winver-plus');
+});
+
+const openSettingsButton = document.getElementById('gotoSettings');
+openSettingsButton.addEventListener('click', async function () {
+    await invoke('open_system_info');
 });

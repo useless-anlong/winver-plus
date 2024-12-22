@@ -19,6 +19,23 @@ export default defineConfig({
         exclude: ['@tauri-apps/api']
     },
     build: {
-        outDir: './dist', // 确保输出目录与 tauri.conf.json 中的 frontendDist 设置一致
+        outDir: './dist/',
+        rollupOptions: {
+            output: {
+                assetFileNames: (assetInfo) => {
+                    const info = assetInfo.name.split('.')
+                    const ext = info[info.length - 1]
+                    if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
+                        return `images/[name][extname]`
+                    }
+                    if (/css/i.test(ext)) {
+                        return `css/[name][extname]`
+                    }
+                    return `assets/[name][extname]`
+                },
+                chunkFileNames: 'js/[name]-[hash].js',
+                entryFileNames: 'js/[name]-[hash].js',
+            }
+        }
     }
 })
