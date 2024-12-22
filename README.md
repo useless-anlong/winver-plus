@@ -1,29 +1,45 @@
-### WINVER-PLUS
-# 一个支持 Mica 且拥有仿 WinUI 3 精美界面的三方 Winver 实用程序
-
 <picture>
- <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/b1946028-8dff-4428-954a-27e25265ece2">
- <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/24c6e8e9-3b07-48a1-8d3f-c941f7f22286">
+ <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/8ad9a4c9-a8b3-41ca-91cc-6678e1a4f3ca">
+ <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/b3963dd3-1502-4dab-8f44-f06e590255f0">
+ <img src="https://github.com/user-attachments/assets/b3963dd3-1502-4dab-8f44-f06e590255f0">
 </picture>
+<h3>WINVER-PLUS</h3>
+<h1>一个支持 Mica 且拥有仿 WinUI 3 精美界面的<br>第三方 Winver 实用程序</h1>
 
 基于 Tauri 2.0 & Vite 6.0.5 构建  
 Copyright © 2024 AlanYan, Open source with Apache License at Here.  
 ### 构建
-#### 安装所需库
+> [!TIP]
+> 除了执行`cargo build`命令，在执行其他命令时务必注意你的终端当前运行目录是否为项目根目录。
+
+<details open>
+<summary><h4>安装所需依赖</h4></summary>
+ 
 1. 安装所需的 NPM 包
 ``` shell
 yarn install
 ```
-
 2. 安装所需的 Cargo 依赖
 ``` shell
 cd src-tauri | cargo build
 ```
 
-3. 启动调试
+</details>
+<details>
+<summary><h4>进行调试或构建</h4></summary>
+
++ 调试
 ``` shell
-cd ../ | yarn tauri dev
+yarn tauri dev
 ```
++ 构建
+``` shell
+yarn tauri build
+```
+默认情况下，构建将被生成至`./src-tauri/target/release`中
+
+</details>
+
 ### 进度
 已全面实现 Winver 功能，正在完善细节。  
 - [X] Windows版本 读取  
@@ -33,6 +49,7 @@ cd ../ | yarn tauri dev
 - [X] 注册用户名 读取  
 - [X] 注册组织 读取  
 - [ ] 仿 Win UI 3 界面完全体
+- [ ] 解决 Powershell 窗口闪一下的问题
 #### 免责声明
 > [!IMPORTANT]
 > 这不是一个 Microsoft 官方应用程序，任何内容均不代表 Microsoft。
