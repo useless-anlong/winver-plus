@@ -137,7 +137,7 @@ button:active::before {
 }
 
 #help-button {
-    width: 32px;
+    width: 33px;
     padding: unset;
     background-color: transparent;
 }
@@ -175,7 +175,7 @@ button:active::before {
     } */
 
     footer {
-        background-color: rgba(255, 255, 255, 0.8);
+        background-color: rgba(255, 255, 255, 0.6);
     }
 
     @keyframes logo-fade-in-0 {
@@ -209,6 +209,10 @@ button:active::before {
 
     .flyout-tips-pointer-border {
         fill: rgba(117, 117, 117, 0.4);
+    }
+
+    #loader .path {
+        stroke: #272728;
     }
 }
 
@@ -261,20 +265,24 @@ button:active::before {
     .flyout-tips-pointer-border {
         fill: rgba(117, 117, 117, 0.4);
     }
+
+    #loader .path {
+        stroke: #eaeaef;
+    }
 }
 
-#linear_fill_0_9-0 {
+/* #linear_fill_0_9-0 {
     animation: logo-fade-in-0 0.35s ease-in 0.1s forwards;
 }
 
 #linear_fill_0_9-1 {
     animation: logo-fade-in-1 0.65s ease-in 0.1s forwards;
-}
+} */
 
 svg#w11_logo {
     transform: scale(0.7);
     opacity: 0;
-    animation: logo-scale-in-all 0.55s cubic-bezier(0.5, -0.2, 1, 1) 0.25s forwards;
+    /* animation: logo-scale-in-all 0.55s cubic-bezier(0.5, -0.2, 1, 1) 0.25s forwards; */
 }
 
 @keyframes logo-scale-in-all {
@@ -350,6 +358,8 @@ hr {
     display: flex;
     flex-direction: row;
     align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
     gap: 12px;
     padding: 10px 0 16px 0;
     margin-left: -1px;
@@ -379,7 +389,7 @@ p#uesr-name {
 
 .content svg {
     border-radius: 32px;
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .logo {
@@ -436,10 +446,9 @@ footer button svg path {
     position: absolute;
 }
 
-.path {
+#loader .path {
     stroke-dasharray: 1, 200;
     stroke-dashoffset: 0;
-    stroke: #0880d8;
     animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
     stroke-linecap: round;
 }

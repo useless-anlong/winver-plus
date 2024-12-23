@@ -1,12 +1,15 @@
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(
     all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
 
+use std::os::windows::process::CommandExt;
 use std::process::Command;
 use tauri::Manager;
 use window_vibrancy::*;
+
+// Windows-specific constant for CREATE_NO_WINDOW
+const CREATE_NO_WINDOW: u32 = 0x08000000;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn main() {
@@ -27,15 +30,9 @@ pub fn main() {
 
 #[tauri::command]
 fn open_system_info() -> Result<(), String> {
-    Command::new("powershell")
-        .args([
-            "-NoProfile",
-            "-NonInteractive",
-            "-WindowStyle",
-            "Hidden",
-            "-Command",
-            "start ms-settings:about",
-        ])
+    Command::new("cmd")
+        .creation_flags(CREATE_NO_WINDOW)
+        .args(["/C", "start ms-settings:about"])
         .output()
         .map_err(|e| e.to_string())?;
     Ok(())
@@ -55,7 +52,6 @@ fn get_windows_info() -> Result<
     ),
     String,
 > {
-    // 合并所有查询到一个PowerShell命令中
     let ps_command = r#"$OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8;
     $os = Get-CimInstance Win32_OperatingSystem;
     $cs = Get-CimInstance Win32_ComputerSystem;
@@ -87,11 +83,12 @@ fn get_windows_info() -> Result<
     $result | ConvertTo-Json"#;
 
     let output = Command::new("powershell")
+        .creation_flags(CREATE_NO_WINDOW)
         .args([
-            "-NoProfile",
             "-NonInteractive",
             "-WindowStyle",
             "Hidden",
+            "-NoProfile",
             "-Command",
             ps_command,
         ])
@@ -101,7 +98,6 @@ fn get_windows_info() -> Result<
     let output_str =
         String::from_utf8(output.stdout).map_err(|e| format!("输出编码错误: {}", e))?;
 
-    // 解析JSON输出
     let result: serde_json::Value =
         serde_json::from_str(&output_str).map_err(|e| format!("JSON解析错误: {}", e))?;
     Ok((

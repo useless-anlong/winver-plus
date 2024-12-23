@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorInfo = document.getElementById('error-info');
     const loader = document.getElementById('loader');
     const mainContent = document.querySelector('main');
+    const w11logo = document.getElementById('w11_logo');
+    const logofill0 = document.getElementById('linear_fill_0_9-0');
+    const logofill1 = document.getElementById('linear_fill_0_9-1');
     // appWindow.show();
 
     // 初始状态：显示加载器，隐藏主内容
@@ -59,7 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
             errorInfo.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
-            }, 250);
+                w11logo.style.animation = 'logo-scale-in-all 0.55s cubic-bezier(0, 0.5, 0.5, 1) forwards';
+                logofill0.style.animation = 'logo-fade-in-0 0.45s ease-in forwards';
+                logofill1.style.animation = 'logo-fade-in-1 0.75s ease-in forwards';
+            }, 150);
 
             console.log('Windows Info:', elements);
         })
