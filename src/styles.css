@@ -194,7 +194,7 @@ button:active::before {
         }
 
         100% {
-            stop-color: #47cbfc;
+            stop-color: #53d1ff;
         }
     }
 
