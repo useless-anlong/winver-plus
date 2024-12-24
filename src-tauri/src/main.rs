@@ -96,10 +96,10 @@ fn get_windows_info() -> Result<
         .map_err(|e| e.to_string())?;
 
     let output_str =
-        String::from_utf8(output.stdout).map_err(|e| format!("输出编码错误: {}", e))?;
+        String::from_utf8(output.stdout).map_err(|e| format!("Encountered when outputting the encoding {}", e))?;
 
     let result: serde_json::Value =
-        serde_json::from_str(&output_str).map_err(|e| format!("JSON解析错误: {}", e))?;
+        serde_json::from_str(&output_str).map_err(|e| format!("Encountered when parsing JSON {}", e))?;
     Ok((
         result["Caption"].as_str().unwrap_or("").to_string(),
         result["BuildVersion"]

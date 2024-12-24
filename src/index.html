@@ -124,9 +124,9 @@
             © Microsoft Corporation，保留所有权利。</p>
     </main>
     <footer>
-        <div class="flyout-tips">
+        <div class="flyout-tips" id="help-flyout">
             <div class="flyout-tips-content">
-                <svg onclick="FlyoutTips()" id="close-flyout-button" width="40" height="40" viewBox="0 0 40 40"
+                <svg onclick="closeHelpFlyoutTips()" id="close-flyout-button" width="40" height="40" viewBox="0 0 40 40"
                     fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="5" y="5" width="30" height="30" rx="3" />
                     <path
@@ -136,15 +136,15 @@
                 <h2>关于 WINVER-PLUS</h2>
                 <p>Based on Tauri 2.0 & Vite 6.0.5<br>Copyright © 2024 AlanYan, Open source with Apache License at
                     Github.</p>
-                <h3>免责声明</h2>
-                    <span>
-                        <p>这不是一个 Microsoft 官方应用程序，任何内容均不代表 Microsoft。</p>
-                        <p>有关您的操作系统的信息均为通过读取注册表得来，均在本地处理，不会上传至云端。</p>
-                        <p>数据可能出现不准确的情况。</p>
-                    </span>
-                    <div class="flyout-tips-footer">
-                        <button id="gotoGithub">在 GitHub 上查看</button>
-                    </div>
+                <h3>免责声明</h3>
+                <span>
+                    <p>这不是一个 Microsoft 官方应用程序，任何内容均不代表 Microsoft。</p>
+                    <p>有关您的操作系统的信息均为通过读取注册表得来，均在本地处理，不会上传至云端。</p>
+                    <p>数据可能出现不准确的情况。</p>
+                </span>
+                <div class="flyout-tips-footer">
+                    <button id="gotoGithub">在 GitHub 上查看</button>
+                </div>
             </div>
             <svg class="flyout-tips-pointer-container" width="39" height="9" viewBox="0 0 39 9" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
@@ -153,13 +153,41 @@
                     d="M19.4142 8.41421L12 1H13.4142L19.4142 7L25.4142 1H26.8284L19.4142 8.41421Z" />
             </svg>
         </div>
-        <button id="help-button" onclick="FlyoutTips()">
-            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M12 2c5.523 0 10 4.478 10 10s-4.477 10-10 10S2 17.522 2 12 6.477 2 12 2Zm0 1.667c-4.595 0-8.333 3.738-8.333 8.333 0 4.595 3.738 8.333 8.333 8.333 4.595 0 8.333-3.738 8.333-8.333 0-4.595-3.738-8.333-8.333-8.333ZM12 15.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm0-8.75a2.75 2.75 0 0 1 2.75 2.75c0 1.01-.297 1.574-1.051 2.359l-.169.171c-.622.622-.78.886-.78 1.47a.75.75 0 0 1-1.5 0c0-1.01.297-1.574 1.051-2.359l.169-.171c.622-.622.78-.886.78-1.47a1.25 1.25 0 0 0-2.493-.128l-.007.128a.75.75 0 0 1-1.5 0A2.75 2.75 0 0 1 12 6.75Z"
-                    fill="#ffffff" />
+        <!-- <div class="flyout-tips" id="error-flyout">
+            <div class="flyout-tips-content">
+                <svg onclick="closeErrorFlyoutTips()" id="close-flyout-button" width="40" height="40"
+                    viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="5" y="5" width="30" height="30" rx="3" />
+                    <path
+                        d="M20 20.708L15.8545 24.8535C15.7568 24.9512 15.6396 25 15.5029 25C15.3597 25 15.2393 24.9528 15.1416 24.8584C15.0472 24.7607 15 24.6403 15 24.4971C15 24.3604 15.0488 24.2432 15.1465 24.1455L19.292 20L15.1465 15.8545C15.0488 15.7568 15 15.638 15 15.498C15 15.4297 15.013 15.3646 15.0391 15.3027C15.0651 15.2409 15.1009 15.1888 15.1465 15.1465C15.1921 15.1009 15.2458 15.0651 15.3076 15.0391C15.3695 15.013 15.4346 15 15.5029 15C15.6396 15 15.7568 15.0488 15.8545 15.1465L20 19.292L24.1455 15.1465C24.2432 15.0488 24.362 15 24.502 15C24.5703 15 24.6338 15.013 24.6924 15.0391C24.7542 15.0651 24.8079 15.1009 24.8535 15.1465C24.8991 15.1921 24.9349 15.2458 24.9609 15.3076C24.987 15.3662 25 15.4297 25 15.498C25 15.638 24.9512 15.7568 24.8535 15.8545L20.708 20L24.8535 24.1455C24.9512 24.2432 25 24.3604 25 24.4971C25 24.5654 24.987 24.6305 24.9609 24.6924C24.9349 24.7542 24.8991 24.8079 24.8535 24.8535C24.8112 24.8991 24.7591 24.9349 24.6973 24.9609C24.6354 24.987 24.5703 25 24.502 25C24.362 25 24.2432 24.9512 24.1455 24.8535L20 20.708Z"
+                        fill="black" fill-opacity="0.8956" />
+                </svg>
+                <h2>读取以下值时遇到错误</h2>
+                <div id="error-container"></div>
+            </div>
+            <svg class="flyout-tips-pointer-container" width="39" height="9" viewBox="0 0 39 9" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path class="flyout-tips-pointer" d="M19.4141 7L26.4141 0H12.4141L19.4141 7Z" />
+                <path class="flyout-tips-pointer-border"
+                    d="M19.4142 8.41421L12 1H13.4142L19.4142 7L25.4142 1H26.8284L19.4142 8.41421Z" />
             </svg>
-        </button>
+        </div> -->
+        <div class="button-row" id="info-button-row">
+            <button id="help-button" onclick="FlyoutTips(this)">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 2c5.523 0 10 4.478 10 10s-4.477 10-10 10S2 17.522 2 12 6.477 2 12 2Zm0 1.667c-4.595 0-8.333 3.738-8.333 8.333 0 4.595 3.738 8.333 8.333 8.333 4.595 0 8.333-3.738 8.333-8.333 0-4.595-3.738-8.333-8.333-8.333ZM12 15.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm0-8.75a2.75 2.75 0 0 1 2.75 2.75c0 1.01-.297 1.574-1.051 2.359l-.169.171c-.622.622-.78.886-.78 1.47a.75.75 0 0 1-1.5 0c0-1.01.297-1.574 1.051-2.359l.169-.171c.622-.622.78-.886.78-1.47a1.25 1.25 0 0 0-2.493-.128l-.007.128a.75.75 0 0 1-1.5 0A2.75 2.75 0 0 1 12 6.75Z"
+                        fill="#ffffff" />
+                </svg>
+            </button>
+            <!-- <button id="error-button" onclick="FlyoutTips(this)">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10.91 2.782a2.25 2.25 0 0 1 2.975.74l.083.138 7.759 14.009a2.25 2.25 0 0 1-1.814 3.334l-.154.006H4.243a2.25 2.25 0 0 1-2.041-3.197l.072-.143L10.031 3.66a2.25 2.25 0 0 1 .878-.878Zm9.505 15.613-7.76-14.008a.75.75 0 0 0-1.254-.088l-.057.088-7.757 14.008a.75.75 0 0 0 .561 1.108l.095.006h15.516a.75.75 0 0 0 .696-1.028l-.04-.086-7.76-14.008 7.76 14.008ZM12 16.002a.999.999 0 1 1 0 1.997.999.999 0 0 1 0-1.997ZM11.995 8.5a.75.75 0 0 1 .744.647l.007.102.004 4.502a.75.75 0 0 1-1.494.103l-.006-.102-.004-4.502a.75.75 0 0 1 .75-.75Z"
+                        fill="#212121" />
+                </svg>
+            </button> -->
+        </div>
         <div class="button-row">
             <button id="gotoSettings">浏览更多</button>
             <button id="done-button">完成</button>
@@ -167,24 +195,77 @@
     </footer>
     <script type="module" src="./main.js"></script>
     <script>
-        const flyout = document.querySelector('.flyout-tips');
-        const helpButton = document.querySelector('#help-button');
 
-        function FlyoutTips() {
-            if (flyout.classList.contains('active')) {
-                flyout.classList.remove('active');
-                helpButton.classList.remove('active');
+        function FlyoutTips(element) {
+            if (element) {
+                const buttonId = element.id;
+                const flyoutId = buttonId.replace('-button', '-flyout');
+                const errorFlyout = document.querySelector('#error-flyout');
+                const helpFlyout = document.querySelector('#help-flyout');
+                const errorButton = document.querySelector('#error-button');
+                const helpButton = document.querySelector('#help-button');
+
+                if (flyoutId === 'help-flyout') {
+                    if (errorFlyout && errorFlyout.classList.contains('active')) {
+                        errorFlyout.classList.remove('active');
+                        errorButton.classList.remove('active');
+                        setTimeout(() => {
+                            errorFlyout.classList.remove('fade-out-animate');
+                        }, 200);
+                    }
+                } else if (flyoutId === 'error-flyout') {
+                    if (helpFlyout && helpFlyout.classList.contains('active')) {
+                        helpFlyout.classList.remove('active');
+                        helpButton.classList.remove('active');
+                        setTimeout(() => {
+                            helpFlyout.classList.remove('fade-out-animate');
+                        }, 200);
+                    }
+                }
+
+                const flyout = document.querySelector(`#${flyoutId}`);
+                const button = document.querySelector(`#${buttonId}`);
+
+                if (flyout.classList.contains('active')) {
+                    flyout.classList.remove('active');
+                    button.classList.remove('active');
+                    setTimeout(() => {
+                        flyout.classList.remove('fade-out-animate');
+                    }, 200);
+                } else {
+                    flyout.classList.add('active');
+                    button.classList.add('active');
+                    setTimeout(() => {
+                        flyout.classList.add('fade-out-animate');
+                    }, 200);
+                }
+            }
+        }
+
+        function closeErrorFlyoutTips() {
+            const errorFlyout = document.querySelector('#error-flyout');
+            const errorButton = document.querySelector('#error-button');
+            if (errorFlyout && errorButton) {
+                errorFlyout.classList.remove('active');
+                errorButton.classList.remove('active');
                 setTimeout(() => {
-                    flyout.classList.remove('fade-out-animate');
-                }, 200);
-            } else {
-                flyout.classList.add('active');
-                helpButton.classList.add('active');
-                setTimeout(() => {
-                    flyout.classList.add('fade-out-animate');
+                    errorFlyout.classList.remove('fade-out-animate');
                 }, 200);
             }
         }
+
+        function closeHelpFlyoutTips() {
+            const helpFlyout = document.querySelector('#help-flyout');
+            const helpButton = document.querySelector('#help-button');
+            if (helpFlyout && helpButton) {
+                helpFlyout.classList.remove('active');
+                helpButton.classList.remove('active');
+                setTimeout(() => {
+                    helpFlyout.classList.remove('fade-out-animate');
+                }, 200);
+            }
+        }
+
     </script>
 </body>
 
