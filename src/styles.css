@@ -223,6 +223,15 @@ button:active::before {
     .error-icon {
         fill: #d13438;
     }
+
+    span code {
+        outline: 1px solid rgba(117, 117, 117, 0.0);
+    }
+
+    span p:hover code {
+        background-color: #ffffff;
+        outline: 1px solid rgba(117, 117, 117, 0.4);
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -281,6 +290,15 @@ button:active::before {
 
     .error-icon {
         fill: #ff4343;
+    }
+
+    span code {
+        outline: 1px solid rgba(117, 117, 117, 0.0);
+    }
+
+    span p:hover code {
+        background-color: #3f3f3f;
+        outline: 1px solid rgba(117, 117, 117, 0.4);
     }
 }
 
@@ -634,11 +652,37 @@ span code {
     color: var(--Text-Fill-Color-Secondary);
     line-height: 18px;
     margin-top: 24px;
-    user-select: text;
+    user-select: all;
     width: calc(278px - (19px + 6px));
+    max-width: 80vw;
+    max-height: 18px;
     margin: 0;
-    white-space: normal;
+    /* white-space: normal; */
+    /* word-wrap: break-word; */
+    white-space: nowrap;
+    /* 只显示一行 */
+    overflow: hidden;
+    /* 隐藏溢出内容 */
+    text-overflow: ellipsis;
+    /* 使用省略号表示溢出内容 */
+    transition: all 0.2s cubic-bezier(0.15, 0.45, 0.4, 0.9);
+    filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.14));
+}
+
+span p:hover code {
+    /* white-space: normal; */
     word-wrap: break-word;
+    overflow: visible;
+    text-overflow: unset;
+    width: fit-content;
+    padding: 1px 6px;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+    margin-left: -6px;
+    margin-top: -1px;
+    margin-bottom: -1px;
+    max-height: 48px;
+
 }
 
 #error-container p {

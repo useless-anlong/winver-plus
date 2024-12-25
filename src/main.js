@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 'windows-edition': '',
                 'system-version': '未成功读取注册表键值 <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DisplayVersion</code>',
                 'bulid-version': '未成功读取注册表键值 <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\LCUVer</code>',
-                'registered-org': '未成功读取注册表键值 <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\</code>',
-                'registered-owner': '未成功读取注册表键值 <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\</code>',
+                'registered-org': '未成功读取注册表键值 <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\RegisteredOrgani<br>zation</code>',
+                'registered-owner': '未成功读取注册表键值 <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\RegisteredOwner</code>',
                 'system-locale': '未成功读取指令 <code>Get-WinSystemLocale</code> 中的 <code>DisplayName</code> 值',
                 'device-type': '未成功读取指令 <code>Get-CimInstance Win32_ComputerSystem</code> 中的 <code>PCSystemType</code> 值',
                 'system-type': '未成功读取指令 <code>Get-CimInstance Win32_ComputerSystem</code> 中的 <code>SystemType</code> 值'
@@ -113,10 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const errorContainer = document.getElementById('error-container');
                 if (errorContainer) {
                     errorValues.forEach(errorId => {
-                        // 添加 errorButton 和 errorFlyout
                         const errorListElement = document.createElement('div');
                         errorListElement.className = 'error-list';
-                        errorContainer.innerHTML = `
+                        errorListElement.innerHTML = `
             <span>
                 <h3>
                 <svg width="19" height="19" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
