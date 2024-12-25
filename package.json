@@ -1,7 +1,7 @@
 {
     "name": "winver-plus",
     "private": true,
-    "version": "0.1.0",
+    "version": "0.1.2",
     "description": "A third-party winver with an elegant user interface similar to WinUI 3.",
     "type": "module",
     "scripts": {
