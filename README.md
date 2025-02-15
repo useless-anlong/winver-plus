@@ -6,8 +6,8 @@
 <h3 align="center">WINVER-PLUS</h3>
 <h1 align="center">一个支持 Mica 且拥有仿 WinUI 3 精美界面的<br>第三方 Winver 实用程序</h1>
 
-<p align="center">基于 Tauri 2.0 & Vite 6.0.5 构建<br>
-Copyright © 2024 AlanYan, Open source with Apache License at Here.</p>
+<p align="center">基于 Tauri V2 & Vite 6 构建<br>
+Copyright © 2024 AlanYan, Open source with Apache License</p>
 
 ### 构建
 > [!TIP]
@@ -37,21 +37,21 @@ yarn tauri dev
 ``` shell
 yarn tauri build
 ```
-默认情况下，构建将被生成至`./src-tauri/target/release`中
+默认情况下，构建将被生成至`/src-tauri/target/release`中
 
 </details>
 
 ### 进度
-已全面实现 Winver 功能，正在完善细节。  
+已全部完成。
 - [X] Windows版本 读取  
 - [X] 系统版本 读取  
 - [X] 版本号 读取  
 - [X] OS 内部版本 读取  
 - [X] 注册用户名 读取  
 - [X] 注册组织 读取  
-- [ ] 仿 Win UI 3 界面完全体
-- [ ] 解决 Powershell 窗口闪一下的问题
-- [ ] 优化最终构建大小
+- [X] 仿 Win UI 3 界面完全体
+- [X] 解决 Powershell 窗口闪一下的问题
+- [X] 优化最终构建大小
 #### 免责声明
 > [!IMPORTANT]
 > 这不是一个 Microsoft 官方应用程序，任何内容均不代表 Microsoft。
