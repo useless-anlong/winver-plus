@@ -44,16 +44,48 @@ document.addEventListener('DOMContentLoaded', () => {
             const cleanWindowsName = windowsCaption.replace('Microsoft ', '');
             const editionName = cleanWindowsName.replace('Windows 11 ', '');
 
+            // 版本名称翻译映射表
+            const versionTranslations = {
+                'Dev': 'Dev 预览版',
+                'Beta': 'Beta 预览版',
+                'Canary': 'Canary 预览版',
+                'Release Preview': '发布预览版',
+                'Insider Preview': '预览体验版'
+            };
+
+            // 系统类型翻译映射表
+            const systemTypeTranslations = {
+                'x64-based PC': '64 位操作系统',
+                'ARM64-based PC': 'ARM 架构操作系统',
+                'x86-based PC': '32 位操作系统'
+            };
+
+            // Windows 版本翻译映射表
+            const editionTranslations = {
+                'Pro': '专业版',
+                'Pro Insider Preview': '专业版 - 预览体验版',
+                'Home': '家庭版',
+                'Home Insider Preview': '家庭版 - 预览体验版',
+                'Enterprise': '企业版',
+                'Enterprise Insider Preview': '企业版 - 预览体验版',
+                'Education': '教育版',
+                'Education Insider Preview': '教育版 - 预览体验版'
+            };
+
+            const translatedDisplayVersion = versionTranslations[displayVersion] || displayVersion;
+            const translatedSystemType = systemTypeTranslations[systemType] || systemType;
+            const translatedEdition = editionTranslations[editionName] || editionName;
+
             const elements = {
                 'windows-version': cleanWindowsName.replace(editionName, '').trim() || '读取错误',
-                'windows-edition': editionName || 'N/A',
-                'system-version': displayVersion || 'N/A',
+                'windows-edition': translatedEdition || 'N/A',
+                'system-version': translatedDisplayVersion || 'N/A',
                 'bulid-version': buildVersion || 'N/A',
                 'registered-org': registeredOrg || 'N/A',
                 'registered-owner': registeredOwner || 'N/A',
                 'system-locale': osLocale || 'N/A',
                 'device-type': pcSystemType || 'N/A',
-                'system-type': systemType || 'N/A'
+                'system-type': translatedSystemType || 'N/A'
             };
 
             const errorDescriptions = {
@@ -154,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const openGithubUrlButton = document.getElementById('gotoGithub');
 openGithubUrlButton.addEventListener('click', async function () {
-    console.log('已执行打开url');
+    // console.log('已执行打开url');
     await open('https://github.com/useless-anlong/winver-plus');
 });
 
